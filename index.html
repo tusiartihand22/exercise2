@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple Calculator</title>
+    </head>
+    <body>
+        <header>
+            <link rel="stylesheet" type="text/css" href="calculator.css">
+        </header>
+        <div class="calculator">
+            <input type="text" id="screen" value="" disabled />
+            <div class="calculator-keys">
+                <button type="button" value="1" onclick="button1()">1</button>
+                <button type="button" value="2" onclick="button2()">2</button>
+                <button type="button" value="3" onclick="button3()">3</button>
+                <button type="button" value="4" onclick="button4()">4</button>
+                <button type="button" value="5" onclick="button5()">5</button>
+                <button type="button" value="6" onclick="button6()">6</button>
+                <button type="button" value="7" onclick="button7()">7</button>
+                <button type="button" value="8" onclick="button8()">8</button>
+                <button type="button" value="9" onclick="button9()">9</button>
+                <button type="button" value="0" onclick="button0()">0</button>
+                
+                <button type="button" class="operator" value="+" onclick="buttonPlus()">+</button>
+                <button type="button" class="operator" value="-" onclick="buttonMinus()">-</button>
+                <button type="button" class="operator" value="*" onclick="buttonMulti()">&times;</button>
+                <button type="button" class="operator" value="/" onclick="buttonDivide() ">&divide;</button>
+
+                <button type="button" class="equal_operator" value="=" onclick="buttonEqual()">=</button>
+                <button type="button" class="clear" value="clear">C</button>  
+            </div>
+        </div>
+        <script src="calculator.js"></script>
+    </body>
+</html>
