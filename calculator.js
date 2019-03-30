@@ -1,40 +1,103 @@
-function button1(){
-    document.getElementById("screen").value += 1;
+const calculator = {
+    displayValue: '0',
+    firstOperand: null,
+    waitForSecondOperand: false,
+    operator: null,
+};
+  
+function inputDigit(digit) {
+    const { displayValue, waitForSecondOperand } = calculator;
+  
+    if (waitForSecondOperand === true) {
+      calculator.displayValue = digit;
+      calculator.waitForSecondOperand = false;
+    } else {
+      calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+    }
 }
-function button2(){
-    document.getElementById("screen").value += 2;
+  
+function inputDecimal(dot) {
+    if (calculator.waitForSecondOperand === true) return;
+      
+    if (!calculator.displayValue.includes(dot)) {
+        calculator.displayValue += dot;
+    }
 }
-function button3(){
-    document.getElementById("screen").value += 3;
+  
+function handleOperator(nextOperator) {
+    const { firstOperand, displayValue, operator } = calculator
+    const inputValue = parseFloat(displayValue);
+  
+    if (operator && calculator.waitForSecondOperand)  {
+        calculator.operator = nextOperator;
+        return;
+    }
+  
+    if (firstOperand == null) {
+        calculator.firstOperand = inputValue;
+    } else if (operator) {
+        const currentValue = firstOperand || 0;
+        const result = performCalculation[operator](currentValue, inputValue);
+  
+        calculator.displayValue = String(result);
+        calculator.firstOperand = result;
+    }
+    
+    calculator.waitForSecondOperand = true;
+    calculator.operator = nextOperator;
 }
-function button4(){
-    document.getElementById("screen").value += 4;
+  
+const performCalculation = {
+    '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
+  
+    '*': (firstOperand, secondOperand) => firstOperand * secondOperand,
+  
+    '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
+  
+    '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+  
+    '=': (firstOperand, secondOperand) => secondOperand
+};
+  
+function resetCalculator() {
+    calculator.displayValue = '0';
+    calculator.firstOperand = null;
+    calculator.waitForSecondOperand = false;
+    calculator.operator = null;
 }
-function button5(){
-    document.getElementById("screen").value += 5;
+  
+function updateDisplay() {
+    const display = document.querySelector('.calculator-screen');
+    display.value = calculator.displayValue;
 }
-function button6(){
-    document.getElementById("screen").value += 6;
-}
-function button7(){
-    document.getElementById("screen").value += 7;
-}
-function button8(){
-    document.getElementById("screen").value += 8;
-}
-function button9(){
-    document.getElementById("screen").value += 9;
-}
-function button0(){
-    document.getElementById("screen").value += 0;
-}
-function buttonPlus(){
-    document.getElementById("screen").value += "+";
-}
-function buttonMinus(){
-    document.getElementById("screen").value += "-";
-}
-function buttonEqual(){
-    let result = document.getElementById("screen").innerText;
-    console.log(result);
-}
+  
+updateDisplay();
+  
+const keys = document.querySelector('.calculator-keys');
+keys.addEventListener('click', (event) => {
+const { target } = event;
+    if (!target.matches('button')) {
+        return;
+    }
+  
+    if (target.classList.contains('operator')) {
+        handleOperator(target.value);
+        updateDisplay();
+        return;
+    }
+  
+    if (target.classList.contains('decimal')) {
+        inputDecimal(target.value);
+        updateDisplay();
+        return;
+    }
+  
+    if (target.classList.contains('clear')) {
+        resetCalculator();
+        updateDisplay();
+        return;
+    }
+  
+    inputDigit(target.value);
+    updateDisplay();
+});
